@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:image/image.dart' as img;
 import 'package:image_picker/image_picker.dart';
 import '../helper/image_classification_helper.dart';
+import '../helper/image_storage.dart';
 
 class GalleryScreen extends StatefulWidget {
   const GalleryScreen({super.key});
@@ -31,6 +32,7 @@ class _GalleryScreenState extends State<GalleryScreen> {
     setState(() {});
   }
 
+  // Método para limpiar resultados previos
   void cleanResult() {
     imagePath = null;
     image = null;
@@ -38,12 +40,23 @@ class _GalleryScreenState extends State<GalleryScreen> {
     setState(() {});
   }
 
+  // Procesar la imagen seleccionada
   Future<void> processImage() async {
     if (imagePath != null) {
       final imageData = File(imagePath!).readAsBytesSync();
       image = img.decodeImage(imageData);
       setState(() {});
+
+      // Obtener clasificación con el modelo
       classification = await imageClassificationHelper?.inferenceImage(image!);
+
+      // Guardar la imagen analizada en caché
+      if (classification != null && classification!.isNotEmpty) {
+        String bestClass = classification!.entries.first.key;
+        double bestProbability = classification!.entries.first.value;
+        await ImageStorage.saveImage(File(imagePath!), bestClass, bestProbability);
+      }
+
       setState(() {});
     }
   }
@@ -60,6 +73,7 @@ class _GalleryScreenState extends State<GalleryScreen> {
       backgroundColor: Colors.grey[200],
       body: Column(
         children: [
+          // Botones para tomar o elegir una foto
           Padding(
             padding: const EdgeInsets.all(10),
             child: Row(
@@ -113,12 +127,16 @@ class _GalleryScreenState extends State<GalleryScreen> {
               ],
             ),
           ),
+
           const Divider(),
+
+          // Mostrar imagen y resultados
           Expanded(
             child: SingleChildScrollView(
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
+                  // Mostrar imagen seleccionada
                   if (imagePath != null)
                     Container(
                       margin: const EdgeInsets.all(10),
@@ -138,8 +156,12 @@ class _GalleryScreenState extends State<GalleryScreen> {
                             width: 300, height: 300, fit: BoxFit.contain),
                       ),
                     ),
+
+                  // Espaciado antes de mostrar los resultados
                   if (classification != null && classification!.isNotEmpty)
                     const SizedBox(height: 20),
+
+                  // Mostrar clasificación de la imagen
                   if (classification != null && classification!.isNotEmpty)
                     Container(
                       width: MediaQuery.of(context).size.width * 0.9,
@@ -187,6 +209,8 @@ class _GalleryScreenState extends State<GalleryScreen> {
                             .toList(),
                       ),
                     ),
+
+                  // Mensaje si no hay imagen seleccionada
                   if (classification == null)
                     const Padding(
                       padding: EdgeInsets.all(20),

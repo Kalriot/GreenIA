@@ -1,42 +1,69 @@
-# Image classification MobileNet
+# Image Classification with MobileNet
 
-This project is a sample of how to perform Image Classification using
-TensorFlow Lite in Flutter. It includes support for both still images and live
-camera streams.
+This project is a **Flutter-based** application that performs **Image Classification** using **TensorFlow Lite**. It supports both **still images** and **live camera streams**, and now includes a **history feature** to review past analyzed images.
 
-## Supported platforms
+## 🚀 Features
+- **📷 Still Image Classification**: Select an image from your gallery or capture a new photo for classification.
+- **🎥 Live Camera Stream Classification**: Real-time object detection using your device's camera.
+- **📜 History Storage**: Automatically saves analyzed images with their classification results.
+- **🗑️ Delete History Items**: Remove previously analyzed images when no longer needed.
+- **🔥 Optimized for Performance**: Uses TensorFlow Lite with background isolates for smooth inference.
+- **♻️ Waste Classification**: Detects the type of waste and categorizes it into **Cardboard, Glass, Paper, or Plastic**.
 
-|      | Android | iOS | Linux | Mac | Windows | Web |
-|------|---------|-----|-------|-----|---------|-----|
-| file | ✅       | ✅   |   ✅   | ✅   |     ✅   |     |
-| life | ✅       | ✅   |   [🚧](https://github.com/flutter/flutter/issues/41710)  | [🚧](https://github.com/flutter/flutter/issues/41708)   |    [🚧](https://github.com/flutter/flutter/issues/41709)    |     |
+## 🖥️ Supported Platforms
+| Platform | File Support | Live Camera Support |
+|----------|-------------|---------------------|
+| ✅ Android | ✅ Yes | ✅ Yes |
+| ✅ iOS | ✅ Yes | ✅ Yes |
+| ✅ Linux | ✅ Yes | 🚧 Partial (see [issue](https://github.com/flutter/flutter/issues/41710)) |
+| ✅ Mac | ✅ Yes | 🚧 Partial (see [issue](https://github.com/flutter/flutter/issues/41708)) |
+| ✅ Windows | ✅ Yes | 🚧 Partial (see [issue](https://github.com/flutter/flutter/issues/41709)) |
+| 🌐 Web | ❌ Not Supported | ❌ Not Supported |
 
-## Download model and labels
+## 📥 Download Model & Labels
+Before building the project, you need to **download the MobileNet TensorFlow Lite model** and its corresponding labels. You can do this by running:
+```bash
+sh ./scripts/download_model.sh
+```
+This will download the necessary files into the `assets/models/` directory.
 
-To build the project, you must first download the MobileNet TensorFlow Lite
-model and its corresponding labels. You can do this by
-running `sh ./scripts/download_model.sh` from the root folder of the repository.
+## 🛠️ Getting Started
+1. **Install Flutter & Dependencies**:
+   ```bash
+   flutter pub get
+   ```
+2. **Run the App**:
+   ```bash
+   flutter run
+   ```
+3. **Select an image or use live classification mode.**
 
-## About the sample
+## 🔥 How It Works
+### 📷 Still Image Mode
+- Choose an image from your gallery **or** take a photo.
+- The model will analyze and classify the object.
+- The result is displayed **with the confidence score**.
+- **Categorizes waste into:**
+  - 🟤 **Cardboard**
+  - 🟢 **Glass**
+  - 📄 **Paper**
+  - 🧴 **Plastic**
 
-- You can use Flutter-supported IDEs such as Android Studio or Visual Studio.
-  This project has been tested on Android Studio Flamingo.
-- Before building, ensure that you have downloaded the model and the labels by
-  following a set of instructions.
-- All heavy operations are performed in a separate background isolate.
-- This sample supports for still images and live camera streams. You can
-  switch between these modes using the bottom bar.
+![Still image mode](screenshots/segundaimagen.png)
 
-### Still image mode
+### 🎥 Live Stream Mode
+- Enables real-time object classification.
+- Uses camera frames to detect and label objects dynamically.
+- Automatically categorizes the detected object into **Cardboard, Glass, Paper, or Plastic**.
 
-You have the option to either select an image from your device or capture a new
-photo to classify.
+![Live stream mode](screenshots/primeraimagen.png)
 
-![Still image mode](screenshots/still_image.jpg)
+### 📜 History Feature
+- **Automatically saves analyzed images** with their classification results.
+- **Stores the detected object name, confidence percentage, and timestamp**.
+- **Delete unwanted entries** directly from the history screen.
 
-### Live stream mode
+![History mode](screenshots/historial.png)
 
-The app will classify a continuous stream of image frames captured by the
-camera.
 
-![Live stream mode](screenshots/live_stream.jpg)
+

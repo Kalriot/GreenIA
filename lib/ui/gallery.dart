@@ -70,8 +70,6 @@ class _GalleryScreenState extends State<GalleryScreen> {
         // Obtener clasificación con el modelo
         classification = await imageClassificationHelper?.inferenceImage(image!);
 
-        // Depuración: Mostrar el output crudo del modelo
-        debugPrint("🔍 Raw Model Output: $classification");
 
         if (classification != null && classification!.isNotEmpty) {
           // Ordenar para encontrar la categoría con la mayor probabilidad
@@ -81,8 +79,6 @@ class _GalleryScreenState extends State<GalleryScreen> {
           // Obtener la categoría con mayor probabilidad y limpiarla
           String detectedCategory = sortedEntries.first.key.toLowerCase().trim();
           double probability = sortedEntries.first.value;
-
-          debugPrint("✅ Categoría detectada: $detectedCategory con ${(probability * 100).toStringAsFixed(2)}% de confianza");
 
           // Guardar la imagen analizada en caché
           await ImageStorage.saveImage(File(imagePath!), detectedCategory, probability);
@@ -179,7 +175,7 @@ class _GalleryScreenState extends State<GalleryScreen> {
                   if (imagePath != null)
                     Container(
                       margin: const EdgeInsets.all(10),
-                      decoration: BoxDecoration(
+                      decoration: BoxDecoration( 
                         borderRadius: BorderRadius.circular(16),
                         boxShadow: [
                           BoxShadow(

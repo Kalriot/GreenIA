@@ -1,0 +1,13 @@
+train: ../train/images
+val: ../valid/images
+test: ../test/images
+
+nc: 47
+names: ['Aerosol', 'Aluminium blister pack', 'Aluminium foil', 'Cigarette', 'Clear plastic bottle', 'Corrugated carton', 'Crisp packet', 'Disposable food container', 'Disposable plastic cup', 'Drink can', 'Drink carton', 'Egg carton', 'Foam food container', 'Food Can', 'Food waste', 'Garbage bag', 'Glass bottle', 'Glass jar', 'Magazine paper', 'Meal carton', 'Metal bottle cap', 'Metal lid', 'Normal paper', 'Other carton', 'Other plastic', 'Other plastic bottle', 'Other plastic container', 'Other plastic wrapper', 'Paper bag', 'Paper cup', 'Paper straw', 'Plastic bottle cap', 'Plastic film', 'Plastic lid', 'Plastic straw', 'Plastic utensils', 'Pop tab', 'Scrap metal', 'Shoe', 'Single-use carrier bag', 'Spread tub', 'Squeezable tube', 'Styrofoam piece', 'Tissues', 'Tupperware', 'Unlabeled litter', 'Wrapping paper']
+
+roboflow:
+  workspace: testing-ml-solid-waste
+  project: my-first-project-v5ywn
+  version: 1
+  license: CC BY 4.0
+  url: https://universe.roboflow.com/testing-ml-solid-waste/my-first-project-v5ywn/dataset/1

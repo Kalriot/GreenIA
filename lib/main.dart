@@ -64,7 +64,7 @@ class _BottomNavigationBarExampleState
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Image.asset('assets/images/tfl_logo.png', height: 50),
+        title: Image.asset('assets/images/basurin.png', height: 50),
         backgroundColor: Colors.black.withOpacity(0.5),
       ),
       body: _widgetOptions != null

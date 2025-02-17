@@ -1,4 +1,4 @@
-cardboard
-glass
-paper
-plastic
+carton
+vidrio
+papel
+plastico

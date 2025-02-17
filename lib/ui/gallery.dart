@@ -4,6 +4,8 @@ import 'package:image/image.dart' as img;
 import 'package:image_picker/image_picker.dart';
 import '../helper/image_classification_helper.dart';
 import '../helper/image_storage.dart';
+import 'package:camera/camera.dart';
+import '../ui/recycling_info.dart'; // Importamos la nueva función para mostrar info de reciclaje
 
 class GalleryScreen extends StatefulWidget {
   const GalleryScreen({super.key});
@@ -18,18 +20,35 @@ class _GalleryScreenState extends State<GalleryScreen> {
   String? imagePath;
   img.Image? image;
   Map<String, double>? classification;
-  bool cameraIsAvailable = Platform.isAndroid || Platform.isIOS;
+  bool cameraIsAvailable = false;
 
   @override
   void initState() {
     super.initState();
     imageClassificationHelper = ImageClassificationHelper();
     _initializeHelper();
+    _checkCameraAvailability();
   }
 
   Future<void> _initializeHelper() async {
     await imageClassificationHelper!.initHelper();
     setState(() {});
+  }
+
+  Future<void> _checkCameraAvailability() async {
+    try {
+      final cameras = await availableCameras();
+      if (cameras.isNotEmpty) {
+        setState(() {
+          cameraIsAvailable = true;
+        });
+      }
+    } catch (e) {
+      debugPrint("Error checking camera availability: $e");
+      setState(() {
+        cameraIsAvailable = false;
+      });
+    }
   }
 
   // Método para limpiar resultados previos
@@ -43,20 +62,39 @@ class _GalleryScreenState extends State<GalleryScreen> {
   // Procesar la imagen seleccionada
   Future<void> processImage() async {
     if (imagePath != null) {
-      final imageData = File(imagePath!).readAsBytesSync();
-      image = img.decodeImage(imageData);
-      setState(() {});
+      try {
+        final imageData = File(imagePath!).readAsBytesSync();
+        image = img.decodeImage(imageData);
+        setState(() {});
 
-      // Obtener clasificación con el modelo
-      classification = await imageClassificationHelper?.inferenceImage(image!);
+        // Obtener clasificación con el modelo
+        classification = await imageClassificationHelper?.inferenceImage(image!);
 
-      // Guardar la imagen analizada en caché
-      if (classification != null && classification!.isNotEmpty) {
-        String bestClass = classification!.entries.first.key;
-        double bestProbability = classification!.entries.first.value;
-        await ImageStorage.saveImage(File(imagePath!), bestClass, bestProbability);
+        // Depuración: Mostrar el output crudo del modelo
+        debugPrint("🔍 Raw Model Output: $classification");
+
+        if (classification != null && classification!.isNotEmpty) {
+          // Ordenar para encontrar la categoría con la mayor probabilidad
+          var sortedEntries = classification!.entries.toList()
+            ..sort((a, b) => b.value.compareTo(a.value));
+
+          // Obtener la categoría con mayor probabilidad y limpiarla
+          String detectedCategory = sortedEntries.first.key.toLowerCase().trim();
+          double probability = sortedEntries.first.value;
+
+          debugPrint("✅ Categoría detectada: $detectedCategory con ${(probability * 100).toStringAsFixed(2)}% de confianza");
+
+          // Guardar la imagen analizada en caché
+          await ImageStorage.saveImage(File(imagePath!), detectedCategory, probability);
+
+          // Llamar a la función para mostrar información de reciclaje
+          setState(() {
+            classification = {detectedCategory: probability}; // Guardar solo la mejor categoría
+          });
+        }
+      } catch (e) {
+        debugPrint("❌ Error processing image: $e");
       }
-
       setState(() {});
     }
   }
@@ -73,24 +111,29 @@ class _GalleryScreenState extends State<GalleryScreen> {
       backgroundColor: Colors.grey[200],
       body: Column(
         children: [
-          // Botones para tomar o elegir una foto
           Padding(
             padding: const EdgeInsets.all(10),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 ElevatedButton.icon(
-                  onPressed: () async {
-                    cleanResult();
-                    final result = await imagePicker.pickImage(
-                      source: ImageSource.camera,
-                    );
-                    imagePath = result?.path;
-                    setState(() {});
-                    processImage();
-                  },
+                  onPressed: cameraIsAvailable
+                      ? () async {
+                          cleanResult();
+                          try {
+                            final result = await imagePicker.pickImage(
+                              source: ImageSource.camera,
+                            );
+                            imagePath = result?.path;
+                            setState(() {});
+                            processImage();
+                          } catch (e) {
+                            debugPrint("Error accessing camera: $e");
+                          }
+                        }
+                      : null,
                   icon: const Icon(Icons.camera_alt, size: 24),
-                  label: const Text("Take a Photo"),
+                  label: const Text("Tomar Foto"),
                   style: ElevatedButton.styleFrom(
                     backgroundColor: Colors.deepPurple,
                     foregroundColor: Colors.white,
@@ -113,7 +156,7 @@ class _GalleryScreenState extends State<GalleryScreen> {
                     processImage();
                   },
                   icon: const Icon(Icons.image, size: 24),
-                  label: const Text("Pick from Gallery"),
+                  label: const Text("Seleccionar Imagen"),
                   style: ElevatedButton.styleFrom(
                     backgroundColor: Colors.orange,
                     foregroundColor: Colors.white,
@@ -127,16 +170,12 @@ class _GalleryScreenState extends State<GalleryScreen> {
               ],
             ),
           ),
-
           const Divider(),
-
-          // Mostrar imagen y resultados
           Expanded(
             child: SingleChildScrollView(
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  // Mostrar imagen seleccionada
                   if (imagePath != null)
                     Container(
                       margin: const EdgeInsets.all(10),
@@ -144,7 +183,7 @@ class _GalleryScreenState extends State<GalleryScreen> {
                         borderRadius: BorderRadius.circular(16),
                         boxShadow: [
                           BoxShadow(
-                            color: Colors.black.withOpacity(0.2),
+                            color: Colors.black.withAlpha((0.2 * 255).toInt()),
                             blurRadius: 10,
                             spreadRadius: 2,
                           ),
@@ -156,68 +195,23 @@ class _GalleryScreenState extends State<GalleryScreen> {
                             width: 300, height: 300, fit: BoxFit.contain),
                       ),
                     ),
-
-                  // Espaciado antes de mostrar los resultados
                   if (classification != null && classification!.isNotEmpty)
-                    const SizedBox(height: 20),
-
-                  // Mostrar clasificación de la imagen
-                  if (classification != null && classification!.isNotEmpty)
-                    Container(
-                      width: MediaQuery.of(context).size.width * 0.9,
-                      padding: const EdgeInsets.all(12),
-                      decoration: BoxDecoration(
-                        color: Colors.white,
-                        borderRadius: BorderRadius.circular(12),
-                        boxShadow: [
-                          BoxShadow(
-                            color: Colors.black.withOpacity(0.1),
-                            blurRadius: 8,
-                            spreadRadius: 2,
-                          ),
-                        ],
-                      ),
-                      child: Column(
-                        children: classification!.entries
-                            .toList()
-                            .map(
-                              (e) => Container(
-                                margin: const EdgeInsets.symmetric(
-                                    vertical: 5, horizontal: 10),
-                                padding: const EdgeInsets.all(10),
-                                decoration: BoxDecoration(
-                                  color: Colors.deepPurple.withOpacity(0.1),
-                                  borderRadius: BorderRadius.circular(8),
-                                ),
-                                child: Row(
-                                  children: [
-                                    Text(
-                                      e.key,
-                                      style: const TextStyle(
-                                          fontWeight: FontWeight.bold,
-                                          fontSize: 16),
-                                    ),
-                                    const Spacer(),
-                                    Text(
-                                      "${(e.value * 100).toStringAsFixed(2)}%",
-                                      style: const TextStyle(fontSize: 16),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                            )
-                            .toList(),
-                      ),
+                    Column(
+                      children: [
+                        Text(
+                          "${classification!.entries.first.key.toUpperCase()} - ${(classification!.entries.first.value * 100).toStringAsFixed(2)}%",
+                          style: const TextStyle(fontSize: 24, fontWeight: FontWeight.bold, color: Colors.black),
+                        ),
+                        getRecyclingInfo(classification!.entries.first.key.toLowerCase()),
+                      ],
                     ),
-
-                  // Mensaje si no hay imagen seleccionada
                   if (classification == null)
                     const Padding(
                       padding: EdgeInsets.all(20),
                       child: Text(
-                        "No image selected. Pick or take a photo to classify.",
+                        "No se ha seleccionado ninguna imagen. Toma o elige una para clasificar.",
                         textAlign: TextAlign.center,
-                        style: TextStyle(fontSize: 16, color: Colors.grey),
+                        style: TextStyle(fontSize: 22, color: Colors.grey),
                       ),
                     ),
                 ],

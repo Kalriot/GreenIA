@@ -1,19 +1,3 @@
-/*
- * Copyright 2023 The TensorFlow Authors. All Rights Reserved.
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *             http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
-
 import 'dart:io';
 import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
@@ -33,23 +17,26 @@ class CameraScreen extends StatefulWidget {
 
 class CameraScreenState extends State<CameraScreen>
     with WidgetsBindingObserver {
-  late CameraController cameraController;
+  CameraController? cameraController;
   late ImageClassificationHelper imageClassificationHelper;
   Map<String, double>? classification;
   bool _isProcessing = false;
 
   // init camera
-  initCamera() {
-    cameraController = CameraController(widget.camera, ResolutionPreset.medium,
-        imageFormatGroup: Platform.isIOS
-            ? ImageFormatGroup.bgra8888
-            : ImageFormatGroup.yuv420);
-    cameraController.initialize().then((value) {
-      cameraController.startImageStream(imageAnalysis);
+  Future<void> initCamera() async {
+    try {
+      cameraController = CameraController(widget.camera, ResolutionPreset.medium,
+          imageFormatGroup: Platform.isIOS
+              ? ImageFormatGroup.bgra8888
+              : ImageFormatGroup.yuv420);
+      await cameraController!.initialize();
+      await cameraController!.startImageStream(imageAnalysis);
       if (mounted) {
         setState(() {});
       }
-    });
+    } catch (e) {
+      debugPrint("Error initializing camera: $e");
+    }
   }
 
   Future<void> imageAnalysis(CameraImage cameraImage) async {
@@ -62,12 +49,10 @@ class CameraScreenState extends State<CameraScreen>
     } finally {
       _isProcessing = false;
       if (mounted) {
-        setState(() {});  // 🔹 Refresca la UI después de la inferencia
+        setState(() {});
       }
     }
   }
-
-
 
   @override
   void initState() {
@@ -76,23 +61,24 @@ class CameraScreenState extends State<CameraScreen>
     imageClassificationHelper = ImageClassificationHelper();
     _initializeHelper();
   }
+
   Future<void> _initializeHelper() async {
     await imageClassificationHelper.initHelper();
     if (mounted) {
-      setState(() {}); // 🔹 Refresca la UI cuando el modelo está listo
+      setState(() {});
     }
-    initCamera();
+    await initCamera();
   }
 
   @override
   Future<void> didChangeAppLifecycleState(AppLifecycleState state) async {
     switch (state) {
       case AppLifecycleState.paused:
-        cameraController.stopImageStream();
+        cameraController?.stopImageStream();
         break;
       case AppLifecycleState.resumed:
-        if (!cameraController.value.isStreamingImages) {
-          await cameraController.startImageStream(imageAnalysis);
+        if (cameraController != null && !cameraController!.value.isStreamingImages) {
+          await cameraController!.startImageStream(imageAnalysis);
         }
         break;
       default:
@@ -102,71 +88,90 @@ class CameraScreenState extends State<CameraScreen>
   @override
   void dispose() {
     WidgetsBinding.instance.removeObserver(this);
-    cameraController.dispose();
+    cameraController?.dispose();
     imageClassificationHelper.close();
     super.dispose();
   }
 
   Widget cameraWidget(context) {
-    var camera = cameraController.value;
-    // fetch screen size
+    if (cameraController == null || !cameraController!.value.isInitialized) {
+      return const Center(child: CircularProgressIndicator());
+    }
+    var camera = cameraController!.value;
     final size = MediaQuery.of(context).size;
-
-    // calculate scale depending on screen and camera ratios
-    // this is actually size.aspectRatio / (1 / camera.aspectRatio)
-    // because camera preview size is received as landscape
-    // but we're calculating for portrait orientation
     var scale = size.aspectRatio * camera.aspectRatio;
-
-    // to prevent scaling down, invert the value
     if (scale < 1) scale = 1 / scale;
 
     return Transform.scale(
       scale: scale,
       child: Center(
-        child: CameraPreview(cameraController),
+        child: CameraPreview(cameraController!),
       ),
     );
   }
 
   @override
   Widget build(BuildContext context) {
-    // Size size = MediaQuery.of(context).size;
     List<Widget> list = [];
 
     list.add(
       SizedBox(
-        child: (!cameraController.value.isInitialized)
-            ? Container()
-            : cameraWidget(context),
+        child: cameraWidget(context),
       ),
     );
     list.add(Align(
       alignment: Alignment.bottomCenter,
       child: SingleChildScrollView(
-        child: Column(
-          children: [
-            if (classification != null)
-              ...(classification!.entries.toList()
-                    ..sort(
-                      (a, b) => a.value.compareTo(b.value),
-                    ))
-                  .reversed
-                  .take(3)
-                  .map(
-                    (e) => Container(
-                      padding: const EdgeInsets.all(8),
-                      color: Colors.white,
-                      child: Row(
-                        children: [
-                          Text(e.key),
-                          const Spacer(),
-                          Text(e.value.toStringAsFixed(2))
-                        ],
+        child: Container(
+          margin: const EdgeInsets.all(10),
+          padding: const EdgeInsets.all(16),
+          decoration: BoxDecoration(
+            color: Colors.white,
+            borderRadius: BorderRadius.circular(12),
+            boxShadow: [
+              BoxShadow(
+                color: Colors.black.withOpacity(0.1),
+                blurRadius: 10,
+                spreadRadius: 2,
+              ),
+            ],
+          ),
+          child: Column(
+            children: [
+              if (classification != null)
+                ...(classification!.entries.toList()
+                      ..sort((a, b) => a.value.compareTo(b.value)))
+                    .reversed
+                    .take(3)
+                    .map(
+                      (e) => Container(
+                        margin: const EdgeInsets.symmetric(vertical: 5),
+                        padding: const EdgeInsets.all(12),
+                        decoration: BoxDecoration(
+                          color: Colors.deepPurple.withOpacity(0.1),
+                          borderRadius: BorderRadius.circular(8),
+                        ),
+                        child: Row(
+                          children: [
+                            Text(
+                              e.key,
+                              style: const TextStyle(
+                                  fontSize: 22, fontWeight: FontWeight.bold),
+                            ),
+                            const Spacer(),
+                            Text(
+                              "${(e.value * 100).toStringAsFixed(2)}%",
+                              style: const TextStyle(
+                                  fontSize: 22,
+                                  fontWeight: FontWeight.bold,
+                                  color: Colors.deepPurple),
+                            )
+                          ],
+                        ),
                       ),
                     ),
-                  ),
-          ],
+            ],
+          ),
         ),
       ),
     ));

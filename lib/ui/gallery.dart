@@ -1,7 +1,9 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:image/image.dart' as img;
 import 'package:image_picker/image_picker.dart';
+import 'package:path/path.dart';
 import '../helper/image_classification_helper.dart';
 import '../helper/image_storage.dart';
 import 'package:camera/camera.dart';
@@ -128,10 +130,10 @@ class _GalleryScreenState extends State<GalleryScreen> {
                           }
                         }
                       : null,
-                  icon: const Icon(Icons.camera_alt, size: 24),
+                  icon: const Icon(Icons.camera_alt, size: 24, color: Color.fromARGB(255, 220, 216, 216),),
                   label: const Text("Tomar Foto"),
                   style: ElevatedButton.styleFrom(
-                    backgroundColor: Colors.deepPurple,
+                    backgroundColor: const Color.fromARGB(255, 48, 185, 11),
                     foregroundColor: Colors.white,
                     padding: const EdgeInsets.symmetric(
                         horizontal: 20, vertical: 12),
@@ -151,10 +153,10 @@ class _GalleryScreenState extends State<GalleryScreen> {
                     setState(() {});
                     processImage();
                   },
-                  icon: const Icon(Icons.image, size: 24),
+                  icon: const Icon(Icons.image, size: 24,color: Color.fromARGB(255, 220, 216, 216),),
                   label: const Text("Seleccionar Imagen"),
                   style: ElevatedButton.styleFrom(
-                    backgroundColor: Colors.orange,
+                    backgroundColor: const Color.fromARGB(255, 21, 111, 1),
                     foregroundColor: Colors.white,
                     padding: const EdgeInsets.symmetric(
                         horizontal: 20, vertical: 12),
@@ -199,6 +201,7 @@ class _GalleryScreenState extends State<GalleryScreen> {
                           style: const TextStyle(fontSize: 24, fontWeight: FontWeight.bold, color: Colors.black),
                         ),
                         getRecyclingInfo(classification!.entries.first.key.toLowerCase()),
+                        
                       ],
                     ),
                   if (classification == null)

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 Widget getRecyclingInfo(String material) {
   // Mapeo de colores y mensajes por tipo de material
@@ -75,11 +76,11 @@ Widget getRecyclingInfo(String material) {
         // Texto de detección
         Text(
           "♻️ ${material[0].toUpperCase()}${material.substring(1)} Detectado ♻️",
-          style: const TextStyle(
+          style: GoogleFonts.montserrat(textStyle: const TextStyle(
             fontWeight: FontWeight.bold,
             fontSize: 24,
             color: Colors.black,
-          ),
+          ),),
         ),
         const SizedBox(height: 10),
 

@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'ui/camera.dart';
 import 'ui/gallery.dart';
 import 'ui/history_screen.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 Future<void> main() async {
   runApp(const BottomNavigationBarApp());
@@ -48,8 +49,9 @@ class _BottomNavigationBarExampleState
   initPages() async {
     _widgetOptions = [
       const GalleryScreen(),
-      if (cameraIsAvailable) CameraScreen(camera: (await availableCameras()).first),
-      const HistoryScreen(), 
+      if (cameraIsAvailable)
+        CameraScreen(camera: (await availableCameras()).first),
+      const HistoryScreen(),
     ];
     setState(() {});
   }
@@ -64,8 +66,28 @@ class _BottomNavigationBarExampleState
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Image.asset('assets/images/basurin.png', height: 50),
-        backgroundColor: Colors.black.withOpacity(0.5),
+        title: Row(
+          children: [
+            Padding(
+              padding: const EdgeInsets.only(bottom: 5.0),
+              child: Image.asset(
+                'assets/images/basurin.png',
+                height: 50,
+              ),
+            ),
+            const SizedBox(
+              width: 25,
+            ),
+            Text(
+              "GreenIA",
+              style: GoogleFonts.roboto(
+                textStyle: const TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+              ),
+            ),
+          ],
+        ),
+        backgroundColor:
+            const Color.fromARGB(255, 10, 225, 100).withOpacity(0.9),
       ),
       body: _widgetOptions != null
           ? _widgetOptions![_selectedIndex]

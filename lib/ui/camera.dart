@@ -102,13 +102,18 @@ class CameraScreenState extends State<CameraScreen>
     var scale = size.aspectRatio * camera.aspectRatio;
     if (scale < 1) scale = 1 / scale;
 
-    return Transform.scale(
+    return InteractiveViewer(
+    panEnabled: true,      // Allow panning (dragging)
+    minScale: 1.0,         // Minimum zoom level
+    maxScale: 5.0,         // Maximum zoom level
+    child: Transform.scale(
       scale: scale,
       child: Center(
         child: CameraPreview(cameraController!),
       ),
-    );
-  }
+    ),
+  );
+}
 
   @override
   Widget build(BuildContext context) {

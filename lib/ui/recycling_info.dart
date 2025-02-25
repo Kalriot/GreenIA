@@ -7,22 +7,22 @@ Widget getRecyclingInfo(String material) {
     "plastico": {
       "color": const Color.fromRGBO(251, 192, 45, 1),
       "icon": "assets/images/amarillo.webp",
-      "message": "El plástico debe depositarse en el tacho amarillo. Se puede reciclar y reutilizar para reducir contaminación."
+      "message": "Deposita el plástico en el contenedor amarillo. Reciclar y reutilizar este material ayuda a disminuir la contaminación y a prevenir "
     },
     "vidrio": {
       "color": Colors.green.shade700,
       "icon": "assets/images/verde.webp",
-      "message": "El vidrio se recicla en el tacho verde. ¡Recuerda enjuagarlo antes de desecharlo!"
+      "message": "Deposita el vidrio en el contenedor verde.  "
     },
     "carton": {
       "color": Colors.brown.shade700,
       "icon": "assets/images/marron.webp",
-      "message": "El cartón debe ir en el tacho marrón. ¡Recíclalo seco y limpio para mejor reutilización!"
+      "message": "Deposita el cartón en el contenedor marrón. ¡Recíclalo seco y limpio para mejor reutilización!"
     },
     "papel": {
       "color": Colors.blue.shade700,
       "icon": "assets/images/azul.webp",
-      "message": "El papel debe ir en el tacho azul. Evita desecharlo mojado para facilitar su reciclaje."
+      "message": "Deposita el papel en el contenedor azul. Evita desecharlo mojado para facilitar su reciclaje."
     }
   };
 

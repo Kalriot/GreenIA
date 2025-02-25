@@ -189,8 +189,14 @@ class _GalleryScreenState extends State<GalleryScreen> {
                       ),
                       child: ClipRRect(
                         borderRadius: BorderRadius.circular(16),
+                        child: InteractiveViewer(
+                          panEnabled: true,
+                          minScale: 0.1,
+                          maxScale: 5.0,
+                        
                         child: Image.file(File(imagePath!),
                             width: 300, height: 300, fit: BoxFit.contain),
+                      ),
                       ),
                     ),
                   if (classification != null && classification!.isNotEmpty)

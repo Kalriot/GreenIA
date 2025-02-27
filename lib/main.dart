@@ -1,10 +1,11 @@
 import 'dart:io';
 import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
+import 'ui/splash_screen.dart';
 import 'ui/camera.dart';
 import 'ui/gallery.dart';
 import 'ui/history_screen.dart';
-import 'package:google_fonts/google_fonts.dart';
 
 Future<void> main() async {
   runApp(const BottomNavigationBarApp());
@@ -17,7 +18,7 @@ class BottomNavigationBarApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return const MaterialApp(
       debugShowCheckedModeBanner: false,
-      home: BottomNavigationBarExample(),
+      home: SplashScreen(),
     );
   }
 }
@@ -26,12 +27,10 @@ class BottomNavigationBarExample extends StatefulWidget {
   const BottomNavigationBarExample({super.key});
 
   @override
-  State<BottomNavigationBarExample> createState() =>
-      _BottomNavigationBarExampleState();
+  State<BottomNavigationBarExample> createState() => _BottomNavigationBarExampleState();
 }
 
-class _BottomNavigationBarExampleState
-    extends State<BottomNavigationBarExample> {
+class _BottomNavigationBarExampleState extends State<BottomNavigationBarExample> {
   late CameraDescription cameraDescription;
   int _selectedIndex = 0;
   List<Widget>? _widgetOptions;
@@ -49,8 +48,7 @@ class _BottomNavigationBarExampleState
   initPages() async {
     _widgetOptions = [
       const GalleryScreen(),
-      if (cameraIsAvailable)
-        CameraScreen(camera: (await availableCameras()).first),
+      if (cameraIsAvailable) CameraScreen(camera: (await availableCameras()).first),
       const HistoryScreen(),
     ];
     setState(() {});
@@ -75,9 +73,7 @@ class _BottomNavigationBarExampleState
                 height: 50,
               ),
             ),
-            const SizedBox(
-              width: 25,
-            ),
+            const SizedBox(width: 25),
             Text(
               "GreenIA",
               style: GoogleFonts.roboto(
@@ -86,12 +82,11 @@ class _BottomNavigationBarExampleState
             ),
           ],
         ),
-        backgroundColor:
-            const Color.fromARGB(255, 10, 225, 100).withOpacity(0.9),
+        backgroundColor: const Color.fromARGB(255, 10, 225, 100).withOpacity(0.9),
       ),
       body: _widgetOptions != null
           ? _widgetOptions![_selectedIndex]
-          : const Center(child: CircularProgressIndicator()), // Carga inicial
+          : const Center(child: CircularProgressIndicator()),
       bottomNavigationBar: BottomNavigationBar(
         items: const <BottomNavigationBarItem>[
           BottomNavigationBarItem(
@@ -103,7 +98,7 @@ class _BottomNavigationBarExampleState
             label: 'Live Camera',
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.history), // 📌 Historial con su ícono
+            icon: Icon(Icons.history),
             label: 'History',
           ),
         ],

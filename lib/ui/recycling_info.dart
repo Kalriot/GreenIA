@@ -65,7 +65,7 @@ Widget getRecyclingInfo(String material) {
     child: Column(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
-        // Icono del tacho de reciclaje
+
         Image.asset(
           data["icon"],
           width: 100,
@@ -73,7 +73,6 @@ Widget getRecyclingInfo(String material) {
         ),
         const SizedBox(height: 10),
 
-        // Texto de detección
         Text(
           "♻️ ${material[0].toUpperCase()}${material.substring(1)} Detectado ♻️",
           style: GoogleFonts.montserrat(textStyle: const TextStyle(
@@ -84,7 +83,6 @@ Widget getRecyclingInfo(String material) {
         ),
         const SizedBox(height: 10),
 
-        // Mensaje de reciclaje
         Text(
           data["message"],
           textAlign: TextAlign.center,

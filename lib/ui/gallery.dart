@@ -143,28 +143,31 @@ class _GalleryScreenState extends State<GalleryScreen> {
                   ),
                 ),
                 const SizedBox(width: 15),
-                ElevatedButton.icon(
-                  onPressed: () async {
-                    cleanResult();
-                    final result = await imagePicker.pickImage(
-                      source: ImageSource.gallery,
-                    );
-                    imagePath = result?.path;
-                    setState(() {});
-                    processImage();
-                  },
-                  icon: const Icon(Icons.image, size: 24,color: Color.fromARGB(255, 220, 216, 216),),
-                  label: const Text("Seleccionar Imagen"),
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: const Color.fromARGB(255, 21, 111, 1),
-                    foregroundColor: Colors.white,
-                    padding: const EdgeInsets.symmetric(
-                        horizontal: 20, vertical: 12),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(12),
-                    ),
+               ElevatedButton.icon(
+                onPressed: () async {
+                  cleanResult();
+                  final result = await imagePicker.pickImage(
+                    source: ImageSource.gallery,
+                  );
+                  imagePath = result?.path;
+                  setState(() {});
+                  processImage();
+                },
+                icon: const Icon(Icons.image, size: 24, color: Colors.white),
+                label: const Text(
+                  "Seleccionar\nImagen", 
+                  textAlign: TextAlign.center, 
+                ),
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: const Color.fromARGB(255, 21, 111, 1),
+                  foregroundColor: Colors.white,
+                  padding: const EdgeInsets.symmetric(horizontal: 25, vertical: 15),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(12),
                   ),
                 ),
+              ),
+
               ],
             ),
           ),

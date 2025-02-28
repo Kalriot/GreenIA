@@ -1,4 +1,4 @@
-package com.example.temp_project
+package com.example.GreenIA
 
 import io.flutter.embedding.android.FlutterActivity
 

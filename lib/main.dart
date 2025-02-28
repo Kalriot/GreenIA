@@ -91,15 +91,15 @@ class _BottomNavigationBarExampleState extends State<BottomNavigationBarExample>
         items: const <BottomNavigationBarItem>[
           BottomNavigationBarItem(
             icon: Icon(Icons.image),
-            label: 'Gallery',
+            label: 'Galeria',
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.camera_alt),
-            label: 'Live Camera',
+            label: 'Camara en vivo',
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.history),
-            label: 'History',
+            label: 'Historial',
           ),
         ],
         currentIndex: _selectedIndex,

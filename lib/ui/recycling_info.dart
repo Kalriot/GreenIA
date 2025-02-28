@@ -7,22 +7,22 @@ Widget getRecyclingInfo(String material) {
     "plastico": {
       "color": const Color.fromRGBO(251, 192, 45, 1),
       "icon": "assets/images/amarillo.webp",
-      "message": "Deposita el plástico en el contenedor amarillo. Reciclar y reutilizar este material ayuda a disminuir la contaminación y a prevenir "
+      "message": "Deposita los envases de plastico en el contenedor amarillo. Asegúrate de vaciarlos y limpiarlos antes de reciclar. "
     },
     "vidrio": {
-      "color": Colors.green.shade700,
+      "color": const Color.fromARGB(255, 122, 207, 126),
       "icon": "assets/images/verde.webp",
-      "message": "Deposita el vidrio en el contenedor verde.  "
+      "message": "Deposita el botellas y frascos de vidrio en el contenedor verde.  No incluyas vidrio roto, espejos ni cerámica."
     },
     "carton": {
-      "color": Colors.brown.shade700,
+      "color": const Color.fromARGB(255, 195, 141, 127),
       "icon": "assets/images/marron.webp",
-      "message": "Deposita el cartón en el contenedor marrón. ¡Recíclalo seco y limpio para mejor reutilización!"
+      "message": "Deposita cajas y embalajes de cartón en el contenedor marrón. Dóblalos para ahorrar espacio. Evita mezclar cartón sucio o con restos de comida, ya que no se podrá reciclar."
     },
     "papel": {
-      "color": Colors.blue.shade700,
+      "color": const Color.fromARGB(255, 95, 166, 236),
       "icon": "assets/images/azul.webp",
-      "message": "Deposita el papel en el contenedor azul. Evita desecharlo mojado para facilitar su reciclaje."
+      "message": "Deposita periódicos, revistas y hojas en el contenedor azul. No incluyas papel plastificado o sucio."
     }
   };
 
@@ -86,11 +86,12 @@ Widget getRecyclingInfo(String material) {
         Text(
           data["message"],
           textAlign: TextAlign.center,
-          style: const TextStyle(
+          style: GoogleFonts.montserrat(textStyle: const TextStyle(
             fontSize: 18,
             color: Colors.black87,
           ),
         ),
+        )
       ],
     ),
   );

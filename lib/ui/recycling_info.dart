@@ -12,7 +12,7 @@ Widget getRecyclingInfo(String material) {
     "vidrio": {
       "color": const Color.fromARGB(255, 122, 207, 126),
       "icon": "assets/images/verde.webp",
-      "message": "Deposita el botellas y frascos de vidrio en el contenedor verde.  No incluyas vidrio roto, espejos ni cerámica."
+      "message": "Deposita botellas y frascos de vidrio en el contenedor verde.  No incluyas vidrio roto, espejos ni cerámica."
     },
     "carton": {
       "color": const Color.fromARGB(255, 195, 141, 127),

@@ -48,7 +48,7 @@ flutter doctor
 Clona el repositorio del proyecto con:
 
 ```
-git clone https://github.com/Kalriot/GreenIa.git
+git clone https://github.com/Kalriot/GreenIA.git
 cd <nombre_del_proyecto>
 ```
 

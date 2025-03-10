@@ -27,7 +27,7 @@ El modelo fue entrenado utilizando EfficientNetV2 para maximizar tanto la eficie
 
 El entrenamiento se realizó en el entorno Kaggle CPU, y el código del proceso está disponible en el siguiente enlace: [Acceder al entrenamiento](https://www.kaggle.com/code/jeanlavaud/effnet-v2-solid-waste-dataset)
 
-Como resultado obtuvimos un modelo con una precisión de 94.1%.
+Como resultado obtuvimos un modelo con una precisión de 91.4%.
 
 ## 🚀 Guía de Instalación
 

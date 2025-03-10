@@ -95,7 +95,7 @@ La aplicación permite identificar residuos sólidos mediante dos modos de clasi
    - Porcentaje de confianza del modelo
    - Fecha y hora del análisis
 
-### 💭 Colaboradores
+## 💭 Colaboradores
 
 - Lavaud Guevara, Jean Alessandro
 - Mantari Flores, Fabrizio Armando

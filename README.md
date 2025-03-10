@@ -52,14 +52,14 @@ git clone https://github.com/Kalriot/GreenIA.git
 cd <nombre_del_proyecto>
 ```
 
-1. **Instalar dependencias:**
+3. **Instalar dependencias:**
 Ejecuta el siguiente comando para descargar las dependencias necesarias:
 
 ```bash
 flutter pub get
 ```
 
-2. **Ejecuta la aplicación**:
+4. **Ejecuta la aplicación**:
 Inicia la app en un dispositivo o emulador con:
 
 ```bash

@@ -79,8 +79,6 @@ La aplicación permite identificar residuos sólidos mediante dos modos de clasi
    - 📄 **Papel**
    - ⚪ **Plástico**
 
-![Still image mode](screenshots/segundaimagen.png)
-
 ### 🎥 Modo Análisis en Tiempo Real
 
 1. Activa la cámara del móvil para analizar objetos en vivo.

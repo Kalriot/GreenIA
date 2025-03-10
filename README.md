@@ -29,6 +29,27 @@ El entrenamiento se realizó en el entorno Kaggle CPU, y el código del proceso 
 
 ## 🚀 Guía de Instalación
 
+1. **Instalar Flutter**
+  
+Si aún no tienes Flutter instalado, sigue estos pasos:
+
+- Descarga e instala Flutter desde su [sitio web oficial](https://flutter.dev/).
+- Asegúrate de agregar Flutter al PATH de tu sistema.
+- Para verificar la instalación, ejecuta:
+
+```bash
+flutter doctor
+```
+
+2. **Descargar el proyecto**
+
+Clona el repositorio del proyecto con:
+
+```
+git clone https://github.com/Kalriot/TensorTrashProject.git
+cd <nombre_del_proyecto>
+```
+
 1. **Instalar dependencias:**
 Ejecuta el siguiente comando para descargar las dependencias necesarias:
 

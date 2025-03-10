@@ -72,8 +72,8 @@ class ImageClassificationHelper {
   }
 
   Future<void> initHelper() async {
-    _loadLabels();
-    _loadModel();
+    await _loadLabels();
+    await _loadModel();
     isolateInference = IsolateInference();
     await isolateInference.start();
   }

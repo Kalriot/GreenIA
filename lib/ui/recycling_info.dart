@@ -5,9 +5,9 @@ Widget getRecyclingInfo(String material) {
   // Mapeo de colores y mensajes por tipo de material
   final Map<String, Map<String, dynamic>> recyclingData = {
     "plastico": {
-      "color": const Color.fromRGBO(251, 192, 45, 1),
-      "icon": "assets/images/amarillo.webp",
-      "message": "Deposita los envases de plastico en el contenedor amarillo. Asegúrate de vaciarlos y limpiarlos antes de reciclar. "
+      "color": const Color.fromARGB(255, 122, 207, 126),
+      "icon": "assets/images/verde.webp",
+      "message": "Deposita los envases de plastico en el contenedor verde. Asegúrate de vaciarlos y limpiarlos antes de reciclar. "
     },
     "vidrio": {
       "color": const Color.fromARGB(255, 122, 207, 126),
@@ -15,14 +15,14 @@ Widget getRecyclingInfo(String material) {
       "message": "Deposita botellas y frascos de vidrio en el contenedor verde.  No incluyas vidrio roto, espejos ni cerámica."
     },
     "carton": {
-      "color": const Color.fromARGB(255, 195, 141, 127),
-      "icon": "assets/images/marron.webp",
-      "message": "Deposita cajas y embalajes de cartón en el contenedor marrón. Dóblalos para ahorrar espacio. Evita mezclar cartón sucio o con restos de comida, ya que no se podrá reciclar."
+      "color": const Color.fromARGB(255, 122, 207, 126),
+      "icon": "assets/images/verde.webp",
+      "message": "Deposita cajas y embalajes de cartón en el contenedor verde. Dóblalos para ahorrar espacio. Evita mezclar cartón sucio o con restos de comida, ya que no se podrá reciclar."
     },
     "papel": {
-      "color": const Color.fromARGB(255, 95, 166, 236),
-      "icon": "assets/images/azul.webp",
-      "message": "Deposita periódicos, revistas y hojas en el contenedor azul. No incluyas papel plastificado o sucio."
+      "color": const Color.fromARGB(255, 122, 207, 126),
+      "icon": "assets/images/verde.webp",
+      "message": "Deposita periódicos, revistas y hojas en el contenedor verde. No incluyas papel plastificado o sucio."
     }
   };
 
@@ -30,7 +30,6 @@ Widget getRecyclingInfo(String material) {
   String cleanedMaterial = material.trim().toLowerCase();
   debugPrint("🔍 Verificando material: '$cleanedMaterial'");
 
-  // Verificar si el material existe en el diccionario
   if (!recyclingData.containsKey(cleanedMaterial)) {
     debugPrint("⚠️ No hay datos de reciclaje para: '$cleanedMaterial'");
     return Padding(
@@ -44,7 +43,6 @@ Widget getRecyclingInfo(String material) {
   }
 
 
-  // Obtener datos según el material
   final data = recyclingData[material.trim().toLowerCase()]!;
   
   return Container(

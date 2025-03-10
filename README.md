@@ -60,16 +60,28 @@ La aplicación permite identificar residuos sólidos mediante dos modos de clasi
 
 ![Still image mode](screenshots/segundaimagen.png)
 
-### 🎥 Live Stream Mode
+### 🎥 Modo Análisis en Tiempo Real
 
-- Enables real-time object classification.
-- Uses camera frames to detect and label objects dynamically.
-- Automatically categorizes the detected object into **Cardboard, Glass, Paper, or Plastic**.
+1. Activa la cámara del móvil para analizar objetos en vivo.
+2. Se actualiza dinámicamente con la categoría detectada entre **Cartón, Vidrio, Papel o Plástico**.
+3. Este modo permite una clasificación más rápida y sin necesidad de capturar imágenes manualmente.
 
-![Live stream mode](screenshots/primeraimagen.png)
+### 📜 Historial
 
-### 📜 History Feature
+1. Todas las imágenes analizadas en Galeria se guardan automáticamente en un historial.
+2. Cada entrada incluye:
+   - Nombre del residuo clasificado
+   - Porcentaje de confianza del modelo
+   - Fecha y hora del análisis
 
-- **Automatically saves analyzed images** with their classification results.
-- **Stores the detected object name, confidence percentage, and timestamp**.
-- **Delete unwanted entries** directly from the history screen.
+### 💭 Colaboradores
+
+- Lavaud Guevara, Jean Alessandro
+- Mantari Flores, Fabrizio Armando
+- Salcedo Alfaro, Nick Emanuel
+- Sanchez Gotea, Edu Joseph
+- Suyco Rivera, Jesus Pedro
+
+### Docente Investigador Responsable
+
+-  Rodriguez Rodriguez, Ciro

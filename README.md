@@ -12,7 +12,7 @@ Este proyecto esta desarrollado en **Flutter** y utiliza **TensorFlow Lite** par
 
 ## 🔗 Dataset
 
-El modelo fue entrenado con 1,975 imágenes categorizadas en plástico, papel, vidrio y cartón.
+El modelo fue entrenado con 1,975 imágenes categorizadas en plástico, papel, vidrio y cartón a partir de los datasets de [Trashnet](https://huggingface.co/datasets/garythung/trashnet) y [WCD](https://www.kaggle.com/datasets/techsash/waste-classification-data).
 
 - **📦Cartón**: 496 imágenes
 - **🥃Vidrio**: 500 imágenes
